@@ -1,60 +1,36 @@
-
 function gameBoard() {
-
     const rows = 3;
     const columns = 3;
     const board = [];
 
     for (let i = 0; i < rows; i++) {
-        board[i] = []
-        for (let j; j < columns; j++) {
-            board[i] = board.push(cell())
-            console.log(board)
-            console.table(board)
+        board[i] = [];
+        for (let j = 0; j < columns; j++) {
+            board[i].push(cell());
         }
     }
-    
-    const dropToken = (column, player) => {
-        const availableCells = board.filter((row) => row[column].getValue() === 0).map(row => row[column]);
-
-        if (!availableCells.length) return;
-
-        // Otherwise, I have a valid cell, the last one in the filtered array
-        const lowestRow = availableCells.length - 1;
-        board[lowestRow][column].addToken(player);
-    }
-
-    const printBoard = () => {
-        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()));
-        console.log(boardWithCellValues);
-      };
 
     return {
-        dropToken,
-        printBoard
-    }
-
+        board
+    };
 }
 
 function cell() {
-
     let value = 0;
 
     const addMarker = (player) => {
         value = player;
-    }
+    };
 
     const getValue = () => value;
 
     return {
         addMarker,
         getValue
-    }
+    };
 }
 
-
 function displayController(player1 = "Player One", player2 = "Player Two") {
-
     const board = gameBoard();
 
     const players = [
@@ -66,47 +42,65 @@ function displayController(player1 = "Player One", player2 = "Player Two") {
             name: player2,
             marker: 2,
         }
-    ]
+    ];
 
-
-
+    // Switch player's Turn
     let activePlayer = players[0];
 
     const switchPlayerTurn = () => {
-      activePlayer = activePlayer === players[0] ? players[1] : players[0];
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
 
     const getActivePlayer = () => activePlayer;
 
+    // Start a new Round
     const printNewRound = () => {
-        board.printBoard();
         console.log(`${getActivePlayer().name}'s turn.`);
     };
 
+    // Display the game board
+    const displayBoard = () => {
+        for (let row of board.board) {
+            console.log(row.map(cell => cell.getValue()).join(' | '));
+        }
+    };
 
+    const playRound = (row, column) => {
+        if (board.board[row][column].getValue() === 0) {
+            board.board[row][column].addMarker(getActivePlayer().marker);
+            displayBoard();
+            if (checkWinner(row, column)) {
+                console.log(`${getActivePlayer().name} wins!`);
+                return;
+            }
+            switchPlayerTurn();
+            printNewRound();
+        } else {
+            console.log("Invalid move. Try again.");
+        }
+    };
 
-
-    const playRound = (column) => {
-        // Drop a token for the current player
-        console.log( `Dropping ${getActivePlayer().name}'s token into column ${column}...`);
-        board.dropToken(column, getActivePlayer().marker);
-
-        /*  This is where we would check for a winner and handle that logic,
-            such as a win message. */
-
-        // Switch player turn
-        switchPlayerTurn();
-        printNewRound();
+    // Check for a winner after each move
+    const checkWinner = (row, column) => {
+        const playerMarker = getActivePlayer().marker;
+        // Check row
+        if (board.board[row].every(cell => cell.getValue() === playerMarker)) return true;
+        // Check column
+        if (board.board.every(row => row[column].getValue() === playerMarker)) return true;
+        // Check diagonal
+        if (row === column && board.board.every((row, i) => row[i].getValue() === playerMarker)) return true;
+        if (row + column === board.board.length - 1 && board.board.every((row, i) => row[board.board.length - 1 - i].getValue() === playerMarker)) return true;
+        return false;
     };
 
     // Initial play game message
     printNewRound();
+    displayBoard();
 
-    // For the console version, we will only use playRound, but we will need
-    // getActivePlayer for the UI version, so I'm revealing it now
     return {
         playRound,
         getActivePlayer
     };
-
 }
+
+const game = displayController();
