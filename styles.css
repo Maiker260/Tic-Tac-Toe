@@ -1,0 +1,57 @@
+
+::root {
+    box-sizing: border-box;
+}
+
+body {
+    background-color:cornflowerblue;
+    margin: auto;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    max-width: 600px;
+    min-height: 600px;
+    margin: auto;
+    padding: 0 0.5em;
+}
+
+.cell {
+    border: 1px solid black;
+    padding: 1em;
+    text-align: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: lightblue;
+}
+
+.main_title {
+    font-size: 4.3rem;
+    text-align: center;
+}
+
+.user_marker {
+    font-size: 9rem;
+    color: white;
+    margin: auto;
+}
+
+/* Main Footer TO_REMOVE_LATER */
+.footer {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    font-size: 3rem;
+    width: 100%;
+    min-height: 1em;
+    border: 1px solid #ededed;
+}

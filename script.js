@@ -1,3 +1,5 @@
+
+// Function to create the Board
 function gameBoard() {
     const rows = 3;
     const columns = 3;
@@ -7,14 +9,27 @@ function gameBoard() {
         board[i] = [];
         for (let j = 0; j < columns; j++) {
             board[i].push(cell());
+            
         }
     }
+
+    function assignMarker(index) {
+        const cell = document.querySelector( `[data-index=${index}]` );
+
+        const userMarker = document.createElement("p")
+        userMarker.classList.add("user_marker")
+        userMarker.textContent = displayController.getActivePlayer().marker;
+        cell.appendChild(userMarker);
+    }
+
+    
 
     return {
         board
     };
 }
 
+// Function to assign the value to each cell in the board
 function cell() {
     let value = 0;
 
@@ -24,12 +39,15 @@ function cell() {
 
     const getValue = () => value;
 
+    // const cell = document.querySelector( `[data-index=${index}]` );
+
     return {
         addMarker,
         getValue
     };
 }
 
+// Function for the user's features
 function displayController(player1 = "Player One", player2 = "Player Two") {
     const board = gameBoard();
 
