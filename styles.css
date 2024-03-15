@@ -43,6 +43,27 @@ body {
     margin: auto;
 }
 
+.winner_container {
+    text-align: center;
+}
+
+.result {
+    font-size: 3.3rem;
+}
+
+.reset_button {
+    font-size: 1.5em;
+    color: white;
+    background-color: black;
+    border-radius: 1em;
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+.reset_button:hover {
+    background-color: rgb(49, 51, 51);
+}
+
 /* Main Footer TO_REMOVE_LATER */
 .footer {
     display: flex;
